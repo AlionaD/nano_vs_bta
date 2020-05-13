@@ -30,7 +30,7 @@
 #include <vector>
 #include "THStack.h"
 #include "headers/picmake.h"
-
+#include "headers/makemap.h"
 
 using namespace std;
 
@@ -324,4 +324,15 @@ void all_nSV_2(){
   std::cout << not_emty << '\n';
   pdfpainter("/home/argada/work/newpics", "nSV_jet_mach2", c$i);
   c$i->Close();
+}
+
+
+void test_test(){
+  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all1_2204.root";
+  const char *NANO = "/home/argada/work/test_b/nano106.root";
+  string map = "/home/argada/maywork/nano_vs_bta/maps/mapmap.txt";
+  map_map(BTA, NANO, map);
+  Long64_t entry[1000];
+  get_map(1000, entry, map);
+
 }
