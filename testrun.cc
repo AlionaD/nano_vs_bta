@@ -85,7 +85,7 @@ void test_fatnjetpic(const char *BTA, const char *NANO){ /* Need map */
     int nEntries = nEntries_BTA;
     Long64_t entry[nEntries];
     get_map(nEntries, entry, map);
-    plot_plot(BTA, NANO, 1000, entry, h_nJet);
+    plot_plot(BTA, NANO, nEntries, entry, h_nJet);
   }
   makebeauty();
   h_nJet->Draw("COLZ");
