@@ -63,10 +63,10 @@ void test_map(const char *BTA, const char *NANO){ /*Need files with event branch
 
 }
 
-void test_fatnjetpic(const char *BTA, const char *NANO){ /* Need map */
-
-  //const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
-  //const char *NANO = "/home/argada/work/test_b/nano106.root";
+//void test_fatnjetpic(const char *BTA, const char *NANO){ /* Need map */
+void test_fatnjetpic(){
+  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
+  const char *NANO = "/home/argada/work/test_b/nano106.root";
   string map = "./maps/mapmap.txt";
   TH2F* h_nJet = new TH2F("nFatJet", "nFatJet", 10, 0, 10, 10, 0, 10);
   TCanvas *c$i = new TCanvas ("Reco jet", "Reco jet", 1200, 1200);
@@ -85,10 +85,10 @@ void test_fatnjetpic(const char *BTA, const char *NANO){ /* Need map */
     int nEntries = nEntries_BTA;
     Long64_t entry[nEntries];
     get_map(nEntries, entry, map);
-    plot_plot(BTA, NANO, 1000, entry, h_nJet);
+    plot_fatkin(BTA, NANO, nEntries, entry, h_nJet);
   }
   makebeauty();
   h_nJet->Draw("COLZ");
-  pdfpainter(".", "nFatJet", c$i); .
+  pdfpainter(".", "nFatJet", c$i);
 
 }
