@@ -328,11 +328,12 @@ void all_nSV_2(){
 }
 
 
-void test_test(){
-  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
-  const char *NANO = "/home/argada/work/test_b/nano106.root";
+void test_test(const char *BTA, const char *NANO){
+  //const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
+  //const char *NANO = "/home/argada/work/test_b/nano106.root";
+
   string map = "/home/argada/maywork/nano_vs_bta/maps/mapmap.txt";
-  //map_map(BTA, NANO, map);
+  map_map(BTA, NANO, map);
   Long64_t entry[1000];
   get_map(1000, entry, map);
   TH2F* h_nJet = new TH2F("nFatJet", "nFatJet", 10, 0, 10, 10, 0, 10);
