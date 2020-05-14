@@ -328,19 +328,15 @@ void all_nSV_2(){
 }
 
 
-//void test_test(const char *BTA, const char *NANO){
-void test_test(){
+void test_map(const char *BTA, const char *NANO){ /*Need files with event branches */
 
-  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all1_2204.root";
-  const char *NANO = "/home/argada/work/test_b/nano106.root";
+  //const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all1_2204.root";
+  //const char *NANO = "/home/argada/work/test_b/nano106.root";
 
   string map = "./maps/mapmap.txt";
-  map_map(BTA, NANO, map);
   TFile  *y = new TFile(NANO);
   TTree *t$i = (TTree*)y->Get("Events");
-
   TFile  *yy = new TFile (BTA);
-  //TFile ff(BTA);
   TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
   TTree *g$i;
   dir->GetObject("ttree", g$i);
@@ -348,14 +344,46 @@ void test_test(){
   Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
   Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
 
+  if (nEntries_Nano != nEntries_BTA) {
+    std::cout << "Different number of events" << '\n';
+    std::cout << "No map for you" << '\n';
+  } else {
+    int nEntries = nEntries_BTA;
+    Long64_t entry[nEntries];
+    map_map(BTA, NANO, map);
+  }
 
+}
 
-  Long64_t entry[1000];
-  get_map(1000, entry, map);
+void test_fatnjetpic(){ /* Need map */
+
+  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
+  const char *NANO = "/home/argada/work/test_b/nano106.root";
+  string map = "./maps/mapmap.txt";
   TH2F* h_nJet = new TH2F("nFatJet", "nFatJet", 10, 0, 10, 10, 0, 10);
   TCanvas *c$i = new TCanvas ("Reco jet", "Reco jet", 1200, 1200);
+  TFile  *y = new TFile(NANO);
+  TTree *t$i = (TTree*)y->Get("Events");
+  TFile  *yy = new TFile (BTA);
+  TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
+  TTree *g$i;
+  dir->GetObject("ttree", g$i);
+  Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
+  Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
+
+  if (nEntries_Nano != nEntries_BTA) {
+    std::cout << "Different number of events" << '\n';
+  } else {
+    int nEntries = nEntries_BTA;
+    Long64_t entry[nEntries];
+    get_map(nEntries, entry, map);
+    plot_plot(BTA, NANO, 1000, entry, h_nJet);
+  }
+
+  //TH2F* h_nJet = new TH2F("nFatJet", "nFatJet", 10, 0, 10, 10, 0, 10);
+  //TCanvas *c$i = new TCanvas ("Reco jet", "Reco jet", 1200, 1200);
   makebeauty();
-  //plot_plot(BTA, NANO, 1000, entry, h_nJet);
-  //h_nJet->Draw("COLZ");
-  //pdfpainter("/home/argada/work/newpics", "nFatJet", c$i);
+  h_nJet->Draw("COLZ");
+  pdfpainter("/home/argada/work/newpics", "nFatJet", c$i);
+
 }
