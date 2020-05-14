@@ -328,18 +328,34 @@ void all_nSV_2(){
 }
 
 
-void test_test(const char *BTA, const char *NANO){
-  //const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
-  //const char *NANO = "/home/argada/work/test_b/nano106.root";
+//void test_test(const char *BTA, const char *NANO){
+void test_test(){
+
+  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all1_2204.root";
+  const char *NANO = "/home/argada/work/test_b/nano106.root";
 
   string map = "./maps/mapmap.txt";
   map_map(BTA, NANO, map);
+  TFile  *y = new TFile(NANO);
+  TTree *t$i = (TTree*)y->Get("Events");
+
+  TFile  *yy = new TFile (BTA);
+  //TFile ff(BTA);
+  TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
+  TTree *g$i;
+  dir->GetObject("ttree", g$i);
+
+  Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
+  Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
+
+
+
   Long64_t entry[1000];
   get_map(1000, entry, map);
   TH2F* h_nJet = new TH2F("nFatJet", "nFatJet", 10, 0, 10, 10, 0, 10);
   TCanvas *c$i = new TCanvas ("Reco jet", "Reco jet", 1200, 1200);
   makebeauty();
-  plot_plot(BTA, NANO, 1000, entry, h_nJet);
-  h_nJet->Draw("COLZ");
-  pdfpainter("/home/argada/work/newpics", "nFatJet", c$i);
+  //plot_plot(BTA, NANO, 1000, entry, h_nJet);
+  //h_nJet->Draw("COLZ");
+  //pdfpainter("/home/argada/work/newpics", "nFatJet", c$i);
 }
