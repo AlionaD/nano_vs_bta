@@ -445,3 +445,112 @@ void plot_fatdis_DeepCSVb(const char *BTA, const char *NANO, int n, Long64_t ent
   h_cmva->GetXaxis()->SetTitle( "BTA" );
   h_cmva->GetYaxis()->SetTitle( "Nano" );
 }
+
+void plot_fatdis_DeepCSVb1(const char *BTA, const char *NANO, int n, Long64_t entry[n], TH2F* h_cmva){
+  TFile  *y = new TFile(NANO);
+  TFile f(NANO);
+  TTree *t$i = (TTree*)y->Get("Events");
+
+  UInt_t nJetsRead_Nano;
+  float etaRead_Nano[50];
+  float ptRead_Nano[50];
+  float cmva_Nano[50];
+
+  t$i->SetBranchAddress("nFatJet",&nJetsRead_Nano);
+  t$i->SetBranchAddress("FatJet_eta",etaRead_Nano);
+  t$i->SetBranchAddress("FatJet_pt",ptRead_Nano);
+  t$i->SetBranchAddress("FatJet_btagDeepB",cmva_Nano);
+
+  TFile  *yy = new TFile (BTA);
+  TFile ff(BTA);
+  TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
+  TTree *g$i;
+  dir->GetObject("ttree", g$i);
+  Int_t nJetsRead_BTA;
+  float etaRead_BTA[50];
+  float ptRead_BTA[50];
+  float cmva_BTA[50];
+
+  g$i->SetBranchAddress("FatJetInfo.nJet",&nJetsRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_eta",etaRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_pt",ptRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_DeepCSVb",cmva_BTA);
+
+  Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
+  Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
+
+  for (Long64_t iEntry_Nano=0; iEntry_Nano<nEntries_Nano; iEntry_Nano++){
+    Long64_t iEntry_BTA1 = entry[iEntry_Nano];
+    g$i->GetEntry(iEntry_BTA1);
+    t$i->GetEntry(iEntry_Nano);
+    int nJet =0;
+    for (size_t iJet_Nano = 0; iJet_Nano < nJetsRead_Nano; iJet_Nano++) {
+      if ((abs(etaRead_Nano[iJet_Nano])<2.5)&&(ptRead_Nano[iJet_Nano]>200)) {
+        h_cmva->Fill(cmva_BTA[nJet], cmva_Nano[iJet_Nano], 1);
+        nJet++;
+      }
+    }
+    if (nJet != nJetsRead_BTA) {
+      std::cout << "nFatJets is not the same" << '\n';
+      std::cout << "Potracheno" << '\n';
+      break;
+    }
+  }
+  h_cmva->GetXaxis()->SetTitle( "BTA" );
+  h_cmva->GetYaxis()->SetTitle( "Nano" );
+}
+
+
+void plot_fatdis_DeepCSVb2(const char *BTA, const char *NANO, int n, Long64_t entry[n], TH2F* h_cmva){
+  TFile  *y = new TFile(NANO);
+  TFile f(NANO);
+  TTree *t$i = (TTree*)y->Get("Events");
+
+  UInt_t nJetsRead_Nano;
+  float etaRead_Nano[50];
+  float ptRead_Nano[50];
+  float cmva_Nano[50];
+
+  t$i->SetBranchAddress("nFatJet",&nJetsRead_Nano);
+  t$i->SetBranchAddress("FatJet_eta",etaRead_Nano);
+  t$i->SetBranchAddress("FatJet_pt",ptRead_Nano);
+  t$i->SetBranchAddress("FatJet_btagCMVA",cmva_Nano);
+
+  TFile  *yy = new TFile (BTA);
+  TFile ff(BTA);
+  TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
+  TTree *g$i;
+  dir->GetObject("ttree", g$i);
+  Int_t nJetsRead_BTA;
+  float etaRead_BTA[50];
+  float ptRead_BTA[50];
+  float cmva_BTA[50];
+
+  g$i->SetBranchAddress("FatJetInfo.nJet",&nJetsRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_eta",etaRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_pt",ptRead_BTA);
+  g$i->SetBranchAddress("FatJetInfo.Jet_DeepCSVc",cmva_BTA);
+
+  Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
+  Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
+
+  for (Long64_t iEntry_Nano=0; iEntry_Nano<nEntries_Nano; iEntry_Nano++){
+    Long64_t iEntry_BTA1 = entry[iEntry_Nano];
+    g$i->GetEntry(iEntry_BTA1);
+    t$i->GetEntry(iEntry_Nano);
+    int nJet =0;
+    for (size_t iJet_Nano = 0; iJet_Nano < nJetsRead_Nano; iJet_Nano++) {
+      if ((abs(etaRead_Nano[iJet_Nano])<2.5)&&(ptRead_Nano[iJet_Nano]>200)) {
+        h_cmva->Fill(cmva_BTA[nJet], cmva_Nano[iJet_Nano], 1);
+        nJet++;
+      }
+    }
+    if (nJet != nJetsRead_BTA) {
+      std::cout << "nFatJets is not the same" << '\n';
+      std::cout << "Potracheno" << '\n';
+      break;
+    }
+  }
+  h_cmva->GetXaxis()->SetTitle( "BTA" );
+  h_cmva->GetYaxis()->SetTitle( "Nano" );
+}

@@ -39,9 +39,9 @@ using namespace std;
 void test_map(){ /*Need files with event branches */
 
   const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all1_2204.root";
-  const char *NANO = "/home/argada/work/test_b/nano107.root";
+  const char *NANO = "/home/argada/work/test_b/nano109.root";
 
-  string map = "./maps/mapmap8.txt";
+  string map = "./maps/mapmap9.txt";
   TFile  *y = new TFile(NANO);
   TTree *t$i = (TTree*)y->Get("Events");
   TFile  *yy = new TFile (BTA);
@@ -125,4 +125,33 @@ void test_fatnjetdis(){
   makebeauty();
   h_DeepCSVb->Draw("COLZ");
   pdfpainter("/home/argada/work/newpics", "FatJet_DeepCSVb2", c$i);
+}
+
+void test_fatnjetdis1(){
+  const char *BTA = "/home/argada/work/test_b/JetTree_mc_FatJets_Subjets_Aliona_all4_2204.root";
+  const char *NANO = "/home/argada/work/test_b/nano109.root";
+  string map = "./maps/mapmap9.txt";
+  TH2F* h_btagCMVA = new TH2F("", "DeepCSV c tag discriminator", 101, 0, 1.01, 101, 0, 1.01);
+  TH2F* h_DeepCSVb = new TH2F("", "DeepCSV b tag discriminator", 101, 0, 1.01, 101, 0, 1.01);
+  TCanvas *c$i = new TCanvas ("Fat jet", "Fat jet", 1200, 1200);
+  TFile  *y = new TFile(NANO);
+  TTree *t$i = (TTree*)y->Get("Events");
+  TFile  *yy = new TFile (BTA);
+  TDirectory* dir = gFile->GetDirectory("btaganaFatJets");
+  TTree *g$i;
+  dir->GetObject("ttree", g$i);
+  Long64_t nEntries_Nano=(Long64_t)t$i->GetEntries();
+  Long64_t nEntries_BTA=(Long64_t)g$i->GetEntries();
+
+  if (nEntries_Nano != nEntries_BTA) {
+    std::cout << "Different number of events" << '\n';
+  } else {
+    int nEntries = nEntries_BTA;
+    Long64_t entry[nEntries];
+    get_map(nEntries, entry, map);
+    plot_fatdis_DeepCSVb2(BTA, NANO, nEntries, entry, h_btagCMVA);
+  }
+  makebeauty();
+  h_btagCMVA->Draw("COLZ");
+  pdfpainter("/home/argada/work/newpics", "FatJet_DeepCSVc", c$i);
 }
