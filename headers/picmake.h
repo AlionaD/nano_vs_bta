@@ -5,6 +5,7 @@ void pdfpainter(string path, TString s, TCanvas *c$i){
    dir1 += ".pdf";
    const char* pdf = dir1.c_str();
    c$i->SetRightMargin(0.15);
+   c$i->SetLeftMargin(0.15);
    c$i -> Print(pdf);
 }
 
